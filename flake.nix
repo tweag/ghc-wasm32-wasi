@@ -24,6 +24,8 @@
           config = { contentAddressedByDefault = false; };
         };
         wasi-sdk = pkgs.callPackage pkgs/wasi-sdk.nix { };
+        ghc-wasm32-wasi =
+          pkgs.callPackage pkgs/ghc-wasm32-wasi.nix { inherit wasi-sdk; };
       in
-      { packages = { inherit pkgs wasi-sdk; }; });
+      { packages = { inherit pkgs wasi-sdk ghc-wasm32-wasi; }; });
 }

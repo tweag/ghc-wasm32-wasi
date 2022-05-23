@@ -1,0 +1,22 @@
+name: nix
+
+on:
+  push:
+  pull_request:
+
+jobs:
+
+  nix:
+    name: nix
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: setup-nix
+        uses: cachix/install-nix-action@v17
+
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: nix
+        run: |
+          nix build --no-link .#ghc-wasm32-wasi
