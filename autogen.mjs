@@ -49,11 +49,11 @@ fetchzip {
 `;
 }
 
-async function getGitHubRunId(owner, repo, branch) {
+async function getGitHubRunId(owner, repo, branch, workflow_name) {
   const r = await getJSON(
-    `https://api.github.com/repos/${owner}/${repo}/actions/runs?branch=${branch}&status=success`
+    `https://api.github.com/repos/${owner}/${repo}/actions/runs?branch=${branch}&status=success&per_page=100`
   );
-  return r.workflow_runs[0].id;
+  return r.workflow_runs.find((e) => e.name === workflow_name).id;
 }
 
 async function getGitHubArtifactId(owner, repo, run_id, artifact_name) {
@@ -98,7 +98,7 @@ async function doGHC() {
 }
 
 async function doWasiSdk() {
-  const run_id = await getGitHubRunId("WebAssembly", "wasi-sdk", "main");
+  const run_id = await getGitHubRunId("WebAssembly", "wasi-sdk", "main", "CI");
   const artifact_id = await getGitHubArtifactId(
     "WebAssembly",
     "wasi-sdk",
@@ -110,7 +110,12 @@ async function doWasiSdk() {
 }
 
 async function doLibFFIWasm32() {
-  const run_id = await getGitHubRunId("tweag", "libffi-wasm32", "master");
+  const run_id = await getGitHubRunId(
+    "tweag",
+    "libffi-wasm32",
+    "master",
+    "shell"
+  );
   const artifact_id = await getGitHubArtifactId(
     "tweag",
     "libffi-wasm32",
@@ -121,4 +126,25 @@ async function doLibFFIWasm32() {
   return await fs.promises.writeFile("autogen/libffi-wasm32.nix", s);
 }
 
-Promise.all([doGHC(), doWasiSdk(), doLibFFIWasm32()]);
+async function doWasmtime() {
+  const run_id = await getGitHubRunId(
+    "bytecodealliance",
+    "wasmtime",
+    "v0.37.0",
+    "CI"
+  );
+  const artifact_id = await getGitHubArtifactId(
+    "bytecodealliance",
+    "wasmtime",
+    run_id,
+    "bins-x86_64-linux"
+  );
+  const s = await getGitHubArtifact(
+    "bytecodealliance",
+    "wasmtime",
+    artifact_id
+  );
+  return await fs.promises.writeFile("autogen/wasmtime.nix", s);
+}
+
+Promise.all([doGHC(), doWasiSdk(), doLibFFIWasm32(), doWasmtime()]);
