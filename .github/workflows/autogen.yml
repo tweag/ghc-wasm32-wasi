@@ -1,0 +1,31 @@
+name: autogen
+
+on:
+  push:
+  pull_request:
+
+jobs:
+
+  autogen:
+    name: autogen
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: setup-node
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+          check-latest: true
+
+      - name: setup-nix
+        uses: cachix/install-nix-action@v17
+
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: autogen
+        run: |
+          nix build --no-link .#pkgs.nix-prefetch
+          NIX_PATH=nixpkgs=$(nix flake archive --json | jq -r .inputs.nixpkgs.path) time ./autogen.mjs
+
+          git diff
