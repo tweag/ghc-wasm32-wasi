@@ -23,6 +23,7 @@
           inherit system;
           config = { contentAddressedByDefault = false; };
         };
+        wasi-sdk = pkgs.callPackage pkgs/wasi-sdk.nix { };
       in
-      { packages = { inherit pkgs; }; });
+      { packages = { inherit pkgs wasi-sdk; }; });
 }
