@@ -19,4 +19,4 @@ jobs:
 
       - name: nix
         run: |
-          nix build --no-link .#ghc-wasm32-wasi
+          nix run . -- --info

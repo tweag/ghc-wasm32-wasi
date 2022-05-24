@@ -28,5 +28,16 @@
         ghc-wasm32-wasi =
           pkgs.callPackage pkgs/ghc-wasm32-wasi.nix { inherit wasi-sdk; };
       in
-      { packages = { inherit pkgs wasi-sdk wasmtime ghc-wasm32-wasi; }; });
+      {
+        packages = {
+          inherit pkgs wasi-sdk wasmtime ghc-wasm32-wasi;
+          default = ghc-wasm32-wasi;
+        };
+        apps = {
+          default = {
+            type = "app";
+            program = "${ghc-wasm32-wasi}/bin/wasm32-wasi-ghc";
+          };
+        };
+      });
 }

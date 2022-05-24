@@ -5,10 +5,10 @@ artifacts of our GHC wasm32-wasi port.
 
 ## As a nix flake
 
-The `ghc-wasm32-wasi` output is what you're looking for:
+The default output(`ghc-wasm32-wasi`) is what you're looking for:
 
 ```sh
-$ nix shell .#ghc-wasm32-wasi
+$ nix shell .
 $ wasm32-wasi-ghc --version
 The Glorious Glasgow Haskell Compilation System, version 9.5.20220520
 ```
