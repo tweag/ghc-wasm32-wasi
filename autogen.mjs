@@ -147,4 +147,16 @@ async function doWasmtime() {
   return await fs.promises.writeFile("autogen/wasmtime.nix", s);
 }
 
-Promise.all([doGHC(), doWasiSdk(), doLibFFIWasm32(), doWasmtime()]);
+async function doCabal() {
+  const run_id = await getGitHubRunId("haskell", "cabal", "master", "Validate");
+  const artifact_id = await getGitHubArtifactId(
+    "haskell",
+    "cabal",
+    run_id,
+    "cabal-Linux-8.10.7"
+  );
+  const s = await getGitHubArtifact("haskell", "cabal", artifact_id);
+  return await fs.promises.writeFile("autogen/cabal.nix", s);
+}
+
+Promise.all([doGHC(), doWasiSdk(), doLibFFIWasm32(), doWasmtime(), doCabal()]);

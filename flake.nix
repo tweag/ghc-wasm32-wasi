@@ -23,6 +23,7 @@
           inherit system;
           config = { contentAddressedByDefault = false; };
         };
+        cabal = pkgs.callPackage pkgs/cabal.nix { };
         wasi-sdk = pkgs.callPackage pkgs/wasi-sdk.nix { };
         wasmtime = pkgs.callPackage pkgs/wasmtime.nix { };
         ghc-wasm32-wasi =
@@ -30,7 +31,7 @@
       in
       {
         packages = {
-          inherit pkgs wasi-sdk wasmtime ghc-wasm32-wasi;
+          inherit pkgs cabal wasi-sdk wasmtime ghc-wasm32-wasi;
           default = ghc-wasm32-wasi;
         };
         apps = {
