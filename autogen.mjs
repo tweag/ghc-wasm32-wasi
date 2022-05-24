@@ -130,7 +130,7 @@ async function doWasmtime() {
   const run_id = await getGitHubRunId(
     "bytecodealliance",
     "wasmtime",
-    "v0.37.0",
+    "main",
     "CI"
   );
   const artifact_id = await getGitHubArtifactId(
