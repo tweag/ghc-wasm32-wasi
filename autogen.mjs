@@ -37,7 +37,7 @@ async function getGitLabArtifact(job_id, artifact_path) {
     "--type",
     "sha512",
   ]);
-  const hash = r.stdout.trimEnd();
+  const hash = r.stdout.trim();
   return `
 { fetchzip }:
 fetchzip {
@@ -53,7 +53,7 @@ async function getGitHubRunId(owner, repo, branch, workflow_name) {
   const r = await getJSON(
     `https://api.github.com/repos/${owner}/${repo}/actions/runs?branch=${branch}&status=success&per_page=100`
   );
-  return r.workflow_runs.find((e) => e.name === workflow_name).id;
+  return r.workflow_runs.find((e) => e.name && e.name === workflow_name).id;
 }
 
 async function getGitHubArtifactId(owner, repo, run_id, artifact_name) {
@@ -77,7 +77,7 @@ async function getGitHubArtifact(owner, repo, artifact_id) {
     "--type",
     "sha512",
   ]);
-  const hash = r.stdout.trimEnd();
+  const hash = r.stdout.trim();
   return `
 { fetchzip }:
 fetchzip {
