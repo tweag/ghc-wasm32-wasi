@@ -6,6 +6,7 @@ import util from "util";
 
 async function getJSON(url) {
   const r = await fetch(url);
+  console.error(url);
   return r.json();
 }
 
@@ -50,7 +51,7 @@ fetchzip {
   const sh = `
 #!/bin/sh
 
-curl -L ${url}
+exec curl -L ${url}
 `;
   return { nix, sh };
 }
@@ -97,7 +98,7 @@ fetchzip {
   const sh = `
 #!/bin/sh
 
-curl -L ${url}
+exec curl -L ${url}
 `;
   return { nix, sh };
 }
