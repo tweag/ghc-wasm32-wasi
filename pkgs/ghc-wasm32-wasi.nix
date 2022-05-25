@@ -1,14 +1,28 @@
-{ autoPatchelfHook, callPackage, gmp, stdenvNoCC, wasi-sdk, }:
-let ghc-wasm32-wasi-src = callPackage ../autogen/ghc-wasm32-wasi.nix { };
+{ autoPatchelfHook
+, bignumBackend ? "gmp"
+, callPackage
+, gmp
+, stdenvNoCC
+, wasi-sdk
+,
+}:
+let
+  src =
+    if bignumBackend == "gmp" then
+      callPackage ../autogen/ghc-wasm32-wasi-gmp.nix { }
+    else if bignumBackend == "native" then
+      callPackage ../autogen/ghc-wasm32-wasi-native.nix { }
+    else
+      throw "Unknown bignum backend ${bignumBackend}";
 in
 stdenvNoCC.mkDerivation {
-  name = "ghc-wasm32-wasi";
+  name = "ghc-wasm32-wasi-${bignumBackend}";
 
   buildInputs = [ gmp ];
   nativeBuildInputs = [ autoPatchelfHook ];
 
   unpackPhase = ''
-    cp -r ${ghc-wasm32-wasi-src} $out
+    cp -r ${src} $out
     chmod -R u+w $out
     cd $out
   '';

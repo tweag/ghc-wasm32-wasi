@@ -38,7 +38,7 @@ async function getGitLabArtifact(job_id, artifact_path) {
     "sha512",
   ]);
   const hash = r.stdout.trim();
-  return `
+  const nix = `
 { fetchzip }:
 fetchzip {
   url =
@@ -47,6 +47,12 @@ fetchzip {
     "${hash}";
 }
 `;
+  const sh = `
+#!/bin/sh
+
+curl -L ${url}
+`;
+  return { nix, sh };
 }
 
 async function getGitHubRunId(owner, repo, branch, workflow_name) {
@@ -78,7 +84,7 @@ async function getGitHubArtifact(owner, repo, artifact_id) {
     "sha512",
   ]);
   const hash = r.stdout.trim();
-  return `
+  const nix = `
 { fetchzip }:
 fetchzip {
   url =
@@ -88,75 +94,56 @@ fetchzip {
   stripRoot = false;
 }
 `;
+  const sh = `
+#!/bin/sh
+
+curl -L ${url}
+`;
+  return { nix, sh };
 }
 
-async function doGHC() {
+async function doGHC(bignum_backend) {
   const pipeline_id = await getGitLabPipelineId();
-  const job_id = await getGitLabJobId(pipeline_id, "wasm32-wasi-bindist");
-  const s = await getGitLabArtifact(job_id, "ghc-wasm32-wasi.tar.xz");
-  return await fs.promises.writeFile("autogen/ghc-wasm32-wasi.nix", s);
+  const job_id = await getGitLabJobId(
+    pipeline_id,
+    `wasm32-wasi-bindist: [${bignum_backend}]`
+  );
+  const r = await getGitLabArtifact(
+    job_id,
+    `ghc-wasm32-wasi-${bignum_backend}.tar.xz`
+  );
+  return Promise.all([
+    fs.promises.writeFile(
+      `autogen/ghc-wasm32-wasi-${bignum_backend}.nix`,
+      r.nix
+    ),
+    fs.promises.writeFile(
+      `autogen/ghc-wasm32-wasi-${bignum_backend}.sh`,
+      r.sh,
+      { mode: 0o755 }
+    ),
+  ]);
 }
 
-async function doWasiSdk() {
-  const run_id = await getGitHubRunId("WebAssembly", "wasi-sdk", "main", "CI");
+async function doGitHub(owner, repo, branch, workflow_name, artifact_name) {
+  const run_id = await getGitHubRunId(owner, repo, branch, workflow_name);
   const artifact_id = await getGitHubArtifactId(
-    "WebAssembly",
-    "wasi-sdk",
+    owner,
+    repo,
     run_id,
-    "dist-ubuntu-latest"
+    artifact_name
   );
-  const s = await getGitHubArtifact("WebAssembly", "wasi-sdk", artifact_id);
-  return await fs.promises.writeFile("autogen/wasi-sdk.nix", s);
+  const r = await getGitHubArtifact(owner, repo, artifact_id);
+  return Promise.all([
+    fs.promises.writeFile(`autogen/${repo}.nix`, r.nix),
+    fs.promises.writeFile(`autogen/${repo}.sh`, r.sh, { mode: 0o755 }),
+  ]);
 }
 
-async function doLibFFIWasm32() {
-  const run_id = await getGitHubRunId(
-    "tweag",
-    "libffi-wasm32",
-    "master",
-    "shell"
-  );
-  const artifact_id = await getGitHubArtifactId(
-    "tweag",
-    "libffi-wasm32",
-    run_id,
-    "out"
-  );
-  const s = await getGitHubArtifact("tweag", "libffi-wasm32", artifact_id);
-  return await fs.promises.writeFile("autogen/libffi-wasm32.nix", s);
-}
-
-async function doWasmtime() {
-  const run_id = await getGitHubRunId(
-    "bytecodealliance",
-    "wasmtime",
-    "main",
-    "CI"
-  );
-  const artifact_id = await getGitHubArtifactId(
-    "bytecodealliance",
-    "wasmtime",
-    run_id,
-    "bins-x86_64-linux"
-  );
-  const s = await getGitHubArtifact(
-    "bytecodealliance",
-    "wasmtime",
-    artifact_id
-  );
-  return await fs.promises.writeFile("autogen/wasmtime.nix", s);
-}
-
-async function doCabal() {
-  const run_id = await getGitHubRunId("haskell", "cabal", "master", "Validate");
-  const artifact_id = await getGitHubArtifactId(
-    "haskell",
-    "cabal",
-    run_id,
-    "cabal-Linux-8.10.7"
-  );
-  const s = await getGitHubArtifact("haskell", "cabal", artifact_id);
-  return await fs.promises.writeFile("autogen/cabal.nix", s);
-}
-
-Promise.all([doGHC(), doWasiSdk(), doLibFFIWasm32(), doWasmtime(), doCabal()]);
+doGHC("gmp");
+doGHC("native");
+doGitHub("WebAssembly", "wasi-sdk", "main", "CI", "dist-ubuntu-latest");
+doGitHub("tweag", "libffi-wasm32", "master", "shell", "out");
+doGitHub("bytecodealliance", "wasmtime", "main", "CI", "bins-x86_64-linux");
+doGitHub("haskell", "cabal", "master", "Validate", "cabal-Linux-8.10.7");
+doGitHub("WebAssembly", "binaryen", "main", "CI", "build-ubuntu-latest");
