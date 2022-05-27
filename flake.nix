@@ -30,10 +30,23 @@
         wasmtime-run = pkgs.callPackage pkgs/wasmtime-run.nix {
           inherit qemu-system-wasm32;
         };
-        ghc-wasm32-wasi =
-          pkgs.callPackage pkgs/ghc-wasm32-wasi.nix { inherit wasi-sdk; };
-        wasm32-wasi-cabal = pkgs.callPackage pkgs/wasm32-wasi-cabal.nix {
-          inherit cabal ghc-wasm32-wasi;
+        ghc-wasm32-wasi = ghc-wasm32-wasi-gmp;
+        ghc-wasm32-wasi-gmp = pkgs.callPackage pkgs/ghc-wasm32-wasi.nix {
+          inherit wasi-sdk;
+          bignumBackend = "gmp";
+        };
+        ghc-wasm32-wasi-native = pkgs.callPackage pkgs/ghc-wasm32-wasi.nix {
+          inherit wasi-sdk;
+          bignumBackend = "native";
+        };
+        wasm32-wasi-cabal = wasm32-wasi-cabal-gmp;
+        wasm32-wasi-cabal-gmp = pkgs.callPackage pkgs/wasm32-wasi-cabal.nix {
+          inherit cabal;
+          ghc-wasm32-wasi = ghc-wasm32-wasi-gmp;
+        };
+        wasm32-wasi-cabal-native = pkgs.callPackage pkgs/wasm32-wasi-cabal.nix {
+          inherit cabal;
+          ghc-wasm32-wasi = ghc-wasm32-wasi-native;
         };
         qemu-system-wasm32 =
           pkgs.callPackage pkgs/qemu-system-wasm32.nix { inherit wasmtime; };
@@ -42,7 +55,9 @@
       {
         packages = {
           inherit pkgs binaryen cabal wasi-sdk wasmtime wasmtime-run
-            ghc-wasm32-wasi wasm32-wasi-cabal qemu-system-wasm32 wabt;
+            ghc-wasm32-wasi ghc-wasm32-wasi-gmp ghc-wasm32-wasi-native
+            wasm32-wasi-cabal wasm32-wasi-cabal-gmp wasm32-wasi-cabal-native
+            qemu-system-wasm32 wabt;
           default = ghc-wasm32-wasi;
         };
         apps = {
