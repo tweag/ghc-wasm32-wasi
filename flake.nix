@@ -51,19 +51,44 @@
         qemu-system-wasm32 =
           pkgs.callPackage pkgs/qemu-system-wasm32.nix { inherit wasmtime; };
         wabt = pkgs.callPackage pkgs/wabt.nix { };
+        combined = combined-gmp;
+        combined-gmp = pkgs.symlinkJoin {
+          name = "ghc-wasm32-wasi-combined-gmp";
+          paths = [
+            ghc-wasm32-wasi-gmp
+            wasm32-wasi-cabal-gmp
+            wasi-sdk
+            binaryen
+            wabt
+            wasmtime
+            wasmtime-run
+          ];
+        };
+        combined-native = pkgs.symlinkJoin {
+          name = "ghc-wasm32-wasi-combined-native";
+          paths = [
+            ghc-wasm32-wasi-native
+            wasm32-wasi-cabal-native
+            wasi-sdk
+            binaryen
+            wabt
+            wasmtime
+            wasmtime-run
+          ];
+        };
       in
       {
         packages = {
           inherit pkgs binaryen cabal wasi-sdk wasmtime wasmtime-run
             ghc-wasm32-wasi ghc-wasm32-wasi-gmp ghc-wasm32-wasi-native
             wasm32-wasi-cabal wasm32-wasi-cabal-gmp wasm32-wasi-cabal-native
-            qemu-system-wasm32 wabt;
-          default = ghc-wasm32-wasi;
+            qemu-system-wasm32 wabt combined combined-gmp combined-native;
+          default = combined;
         };
         apps = {
           default = {
             type = "app";
-            program = "${ghc-wasm32-wasi}/bin/wasm32-wasi-ghc";
+            program = "${combined}/bin/wasm32-wasi-ghc";
           };
         };
       });
