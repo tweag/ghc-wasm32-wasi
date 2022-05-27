@@ -88,7 +88,20 @@ chmod +x "$PREFIX/wasm32-wasi-cabal/bin/wasm32-wasi-cabal"
 
 "$PREFIX/wasm32-wasi-cabal/bin/wasm32-wasi-cabal" update
 
-echo "export PATH=$PREFIX/wasm32-wasi-cabal/bin:$PREFIX/ghc-wasm32-wasi/bin:$PREFIX/wasi-sdk/bin:$PREFIX/wasmtime-run/bin:$PREFIX/wasmtime/bin:$PREFIX/binaryen/bin:$PREFIX/wabt/bin:\$PATH" > "$PREFIX/env"
+echo "#!/bin/sh" >> "$PREFIX/add_to_github_path.sh"
+chmod +x "$PREFIX/add_to_github_path.sh"
+for p in \
+  "$PREFIX/wabt/bin" \
+  "$PREFIX/binaryen/bin" \
+  "$PREFIX/wasmtime/bin" \
+  "$PREFIX/wasmtime-run/bin" \
+  "$PREFIX/wasi-sdk/bin" \
+  "$PREFIX/ghc-wasm32-wasi/bin" \
+  "$PREFIX/wasm32-wasi-cabal/bin"
+do
+  echo "export PATH=$p:\$PATH" >> "$PREFIX/env"
+  echo "echo $p >> \$GITHUB_PATH" >> "$PREFIX/add_to_github_path.sh"
+done
 
 popd
 
