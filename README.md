@@ -5,7 +5,7 @@ artifacts of our GHC wasm32-wasi port.
 
 ## As a nix flake
 
-The default output(`ghc-wasm32-wasi`) is what you're looking for:
+The default output is what you're looking for:
 
 ```sh
 $ nix shell
@@ -25,7 +25,7 @@ For Ubuntu 20.04 and similar glibc-based distros:
 $ ./setup.sh
 ...
 Everything set up in /home/runner/.ghc-wasm32-wasi.
-Run 'source '/home/runner/.ghc-wasm32-wasi/env' to add tools to your PATH.
+Run 'source /home/runner/.ghc-wasm32-wasi/env' to add tools to your PATH.
 ```
 
 Set `PREFIX` environment variable to customize where to set up things.

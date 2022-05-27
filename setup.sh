@@ -93,4 +93,4 @@ echo "export PATH=$PREFIX/wasm32-wasi-cabal/bin:$PREFIX/ghc-wasm32-wasi/bin:$PRE
 popd
 
 echo "Everything set up in $PREFIX."
-echo "Run 'source '$PREFIX/env' to add tools to your PATH."
+echo "Run 'source $PREFIX/env' to add tools to your PATH."
