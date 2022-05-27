@@ -37,11 +37,12 @@
         };
         qemu-system-wasm32 =
           pkgs.callPackage pkgs/qemu-system-wasm32.nix { inherit wasmtime; };
+        wabt = pkgs.callPackage pkgs/wabt.nix { };
       in
       {
         packages = {
           inherit pkgs binaryen cabal wasi-sdk wasmtime wasmtime-run
-            ghc-wasm32-wasi wasm32-wasi-cabal qemu-system-wasm32;
+            ghc-wasm32-wasi wasm32-wasi-cabal qemu-system-wasm32 wabt;
           default = ghc-wasm32-wasi;
         };
         apps = {

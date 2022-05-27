@@ -38,6 +38,9 @@ mkdir "$PREFIX/binaryen"
 unzip build-ubuntu-latest.zip -d "$PREFIX/binaryen"
 chmod +x "$PREFIX"/binaryen/bin/*
 
+mkdir "$PREFIX/wabt"
+curl -L https://github.com/WebAssembly/wabt/releases/download/1.0.29/wabt-1.0.29-ubuntu.tar.gz | tar xz --strip-components=1 -C "$PREFIX/wabt"
+
 mkdir -p "$PREFIX/qemu-system-wasm32/bin"
 cc \
   -DWASMTIME="\"$PREFIX/wasmtime/bin/wasmtime\"" \
@@ -85,7 +88,7 @@ chmod +x "$PREFIX/wasm32-wasi-cabal/bin/wasm32-wasi-cabal"
 
 "$PREFIX/wasm32-wasi-cabal/bin/wasm32-wasi-cabal" update
 
-echo "export PATH=$PREFIX/wasm32-wasi-cabal/bin:$PREFIX/ghc-wasm32-wasi/bin:$PREFIX/wasi-sdk/bin:$PREFIX/wasmtime-run/bin:$PREFIX/wasmtime/bin:$PREFIX/binaryen/bin:\$PATH" > "$PREFIX/env"
+echo "export PATH=$PREFIX/wasm32-wasi-cabal/bin:$PREFIX/ghc-wasm32-wasi/bin:$PREFIX/wasi-sdk/bin:$PREFIX/wasmtime-run/bin:$PREFIX/wasmtime/bin:$PREFIX/binaryen/bin:$PREFIX/wabt/bin:\$PATH" > "$PREFIX/env"
 
 popd
 
