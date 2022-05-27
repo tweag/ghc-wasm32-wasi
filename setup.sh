@@ -25,18 +25,18 @@ cp lib/*.a "$PREFIX/wasi-sdk/share/wasi-sysroot/lib/wasm32-wasi"
 
 "$REPO/autogen/wasmtime.sh" > bins-x86_64-linux.zip
 unzip bins-x86_64-linux.zip
-for f in wasmtime-*-x86_64-linux.tar.xz; do
-  tar xJf "$f" --strip-components=1
-done
 mkdir -p "$PREFIX/wasmtime/bin"
-cp wasmtime "$PREFIX/wasmtime/bin"
+tar xJf wasmtime-*-x86_64-linux.tar.xz --strip-components=1 -C "$PREFIX/wasmtime/bin" --wildcards '*/wasmtime'
 
 "$REPO/autogen/cabal.sh" > cabal-Linux-8.10.7.zip
 unzip cabal-Linux-8.10.7.zip
 mkdir -p "$PREFIX/cabal/bin"
 tar xf cabal-head.tar -C "$PREFIX/cabal/bin"
 
-popd
+"$REPO/autogen/binaryen.sh" > build-ubuntu-latest.zip
+mkdir "$PREFIX/binaryen"
+unzip build-ubuntu-latest.zip -d "$PREFIX/binaryen"
+chmod +x "$PREFIX"/binaryen/bin/*
 
 mkdir -p "$PREFIX/qemu-system-wasm32/bin"
 cc \
@@ -85,7 +85,9 @@ chmod +x "$PREFIX/wasm32-wasi-cabal/bin/wasm32-wasi-cabal"
 
 "$PREFIX/wasm32-wasi-cabal/bin/wasm32-wasi-cabal" update
 
-echo "export PATH=$PREFIX/wasm32-wasi-cabal/bin:$PREFIX/ghc-wasm32-wasi/bin:$PREFIX/wasi-sdk/bin:$PREFIX/wasmtime-run/bin:$PREFIX/wasmtime/bin:\$PATH" > "$PREFIX/env"
+echo "export PATH=$PREFIX/wasm32-wasi-cabal/bin:$PREFIX/ghc-wasm32-wasi/bin:$PREFIX/wasi-sdk/bin:$PREFIX/wasmtime-run/bin:$PREFIX/wasmtime/bin:$PREFIX/binaryen/bin:\$PATH" > "$PREFIX/env"
+
+popd
 
 echo "Everything set up in $PREFIX."
 echo "Run 'source '$PREFIX/env' to add tools to your PATH."
