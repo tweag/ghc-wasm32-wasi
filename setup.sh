@@ -23,7 +23,34 @@ unzip out.zip
 cp include/*.h "$PREFIX/wasi-sdk/share/wasi-sysroot/include"
 cp lib/*.a "$PREFIX/wasi-sdk/share/wasi-sysroot/lib/wasm32-wasi"
 
+"$REPO/autogen/wasmtime.sh" > bins-x86_64-linux.zip
+unzip bins-x86_64-linux.zip
+for f in wasmtime-*-x86_64-linux.tar.xz; do
+  tar xJf "$f" --strip-components=1
+done
+mkdir -p "$PREFIX/wasmtime/bin"
+cp wasmtime "$PREFIX/wasmtime/bin"
+
+"$REPO/autogen/cabal.sh" > cabal-Linux-8.10.7.zip
+unzip cabal-Linux-8.10.7.zip
+mkdir -p "$PREFIX/cabal/bin"
+tar xf cabal-head.tar -C "$PREFIX/cabal/bin"
+
 popd
+
+mkdir -p "$PREFIX/qemu-system-wasm32/bin"
+cc \
+  -DWASMTIME="\"$PREFIX/wasmtime/bin/wasmtime\"" \
+  -Wall \
+  -Wextra \
+  -O3 \
+  -o "$PREFIX/qemu-system-wasm32/bin/qemu-system-wasm32" \
+  "$REPO/cbits/qemu-system-wasm32.c"
+
+mkdir -p "$PREFIX/wasmtime-run/bin"
+echo "#!/bin/sh" >> "$PREFIX/wasmtime-run/bin/wasmtime-run"
+echo "exec proot -q $PREFIX/qemu-system-wasm32/bin/qemu-system-wasm32" '${1+"$@"}' >> "$PREFIX/wasmtime-run/bin/wasmtime-run"
+chmod +x "$PREFIX/wasmtime-run/bin/wasmtime-run"
 
 mkdir "$PREFIX/ghc-wasm32-wasi"
 "$REPO/autogen/ghc-wasm32-wasi-$BIGNUM_BACKEND.sh" | tar xJ --strip-components=1 -C "$PREFIX/ghc-wasm32-wasi"
@@ -44,7 +71,21 @@ make lib/settings
 ./bin/wasm32-wasi-ghc-pkg recache
 popd
 
-"$PREFIX/ghc-wasm32-wasi/bin/wasm32-wasi-ghc" --info
+mkdir -p "$PREFIX/wasm32-wasi-cabal/bin"
+echo "#!/bin/sh" >> "$PREFIX/wasm32-wasi-cabal/bin/wasm32-wasi-cabal"
+echo \
+  "CABAL_DIR=$PREFIX/.cabal" \
+  "exec" \
+  "$PREFIX/cabal/bin/cabal" \
+  "--with-compiler=$PREFIX/ghc-wasm32-wasi/bin/wasm32-wasi-ghc" \
+  "--with-hc-pkg=$PREFIX/ghc-wasm32-wasi/bin/wasm32-wasi-ghc-pkg" \
+  "--with-hsc2hs=$PREFIX/ghc-wasm32-wasi/bin/wasm32-wasi-hsc2hs" \
+  '${1+"$@"}' >> "$PREFIX/wasm32-wasi-cabal/bin/wasm32-wasi-cabal"
+chmod +x "$PREFIX/wasm32-wasi-cabal/bin/wasm32-wasi-cabal"
+
+"$PREFIX/wasm32-wasi-cabal/bin/wasm32-wasi-cabal" update
+
+echo "export PATH=$PREFIX/wasm32-wasi-cabal/bin:$PREFIX/ghc-wasm32-wasi/bin:$PREFIX/wasi-sdk/bin:$PREFIX/wasmtime-run/bin:$PREFIX/wasmtime/bin:\$PATH" > "$PREFIX/env"
 
 echo "Everything set up in $PREFIX."
-echo "Call $PREFIX/ghc-wasm32-wasi/bin/wasm32-wasi-ghc to get started."
+echo "Run 'source '$PREFIX/env' to add tools to your PATH."

@@ -25,7 +25,7 @@ For Ubuntu 20.04 and similar glibc-based distros:
 $ ./setup.sh
 ...
 Everything set up in /home/runner/.ghc-wasm32-wasi.
-Call /home/runner/.ghc-wasm32-wasi/ghc-wasm32-wasi/bin/wasm32-wasi-ghc to get started.
+Run 'source '/home/runner/.ghc-wasm32-wasi/env' to add tools to your PATH.
 ```
 
 Set `PREFIX` environment variable to customize where to set up things.
