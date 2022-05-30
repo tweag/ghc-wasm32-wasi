@@ -5,6 +5,7 @@ set -euo pipefail
 readonly BIGNUM_BACKEND="${BIGNUM_BACKEND:-gmp}"
 readonly PREFIX="${PREFIX:-$HOME/.ghc-wasm32-wasi}"
 readonly REPO=$PWD
+readonly SKIP_GHC="${SKIP_GHC:-}"
 
 rm -rf "$PREFIX"
 
@@ -55,6 +56,41 @@ echo "#!/bin/sh" >> "$PREFIX/wasmtime-run/bin/wasmtime-run"
 echo "exec proot -q $PREFIX/qemu-system-wasm32/bin/qemu-system-wasm32" '${1+"$@"}' >> "$PREFIX/wasmtime-run/bin/wasmtime-run"
 chmod +x "$PREFIX/wasmtime-run/bin/wasmtime-run"
 
+echo "#!/bin/sh" >> "$PREFIX/add_to_github_path.sh"
+chmod +x "$PREFIX/add_to_github_path.sh"
+for p in \
+  "$PREFIX/wabt/bin" \
+  "$PREFIX/binaryen/bin" \
+  "$PREFIX/wasmtime/bin" \
+  "$PREFIX/wasmtime-run/bin" \
+  "$PREFIX/wasi-sdk/bin" \
+  "$PREFIX/ghc-wasm32-wasi/bin" \
+  "$PREFIX/wasm32-wasi-cabal/bin"
+do
+  echo "export PATH=$p:\$PATH" >> "$PREFIX/env"
+  echo "echo $p >> \$GITHUB_PATH" >> "$PREFIX/add_to_github_path.sh"
+done
+
+{
+echo "export AR=$PREFIX/wasi-sdk/bin/llvm-ar"
+echo "export CC=$PREFIX/wasi-sdk/bin/clang"
+echo "export CC_FOR_BUILD=cc"
+echo "export CXX=$PREFIX/wasi-sdk/bin/clang++"
+echo "export LD=$PREFIX/wasi-sdk/bin/wasm-ld"
+echo "export NM=$PREFIX/wasi-sdk/bin/llvm-nm"
+echo "export OBJCOPY=$PREFIX/wasi-sdk/bin/llvm-objcopy"
+echo "export OBJDUMP=$PREFIX/wasi-sdk/bin/llvm-objdump"
+echo "export RANLIB=$PREFIX/wasi-sdk/bin/llvm-ranlib"
+echo "export SIZE=$PREFIX/wasi-sdk/bin/llvm-size"
+echo "export STRINGS=$PREFIX/wasi-sdk/bin/llvm-strings"
+echo "export STRIP=$PREFIX/wasi-sdk/bin/llvm-strip"
+} >> "$PREFIX/env"
+
+if [ -n "${SKIP_GHC}" ]
+then
+	exit
+fi
+
 mkdir "$PREFIX/ghc-wasm32-wasi"
 "$REPO/autogen/ghc-wasm32-wasi-$BIGNUM_BACKEND.sh" | tar xJ --strip-components=1 -C "$PREFIX/ghc-wasm32-wasi"
 pushd "$PREFIX/ghc-wasm32-wasi"
@@ -87,21 +123,6 @@ echo \
 chmod +x "$PREFIX/wasm32-wasi-cabal/bin/wasm32-wasi-cabal"
 
 "$PREFIX/wasm32-wasi-cabal/bin/wasm32-wasi-cabal" update
-
-echo "#!/bin/sh" >> "$PREFIX/add_to_github_path.sh"
-chmod +x "$PREFIX/add_to_github_path.sh"
-for p in \
-  "$PREFIX/wabt/bin" \
-  "$PREFIX/binaryen/bin" \
-  "$PREFIX/wasmtime/bin" \
-  "$PREFIX/wasmtime-run/bin" \
-  "$PREFIX/wasi-sdk/bin" \
-  "$PREFIX/ghc-wasm32-wasi/bin" \
-  "$PREFIX/wasm32-wasi-cabal/bin"
-do
-  echo "export PATH=$p:\$PATH" >> "$PREFIX/env"
-  echo "echo $p >> \$GITHUB_PATH" >> "$PREFIX/add_to_github_path.sh"
-done
 
 popd
 
