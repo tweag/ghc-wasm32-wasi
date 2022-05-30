@@ -29,19 +29,6 @@ unzip bins-x86_64-linux.zip
 mkdir -p "$PREFIX/wasmtime/bin"
 tar xJf wasmtime-*-x86_64-linux.tar.xz --strip-components=1 -C "$PREFIX/wasmtime/bin" --wildcards '*/wasmtime'
 
-"$REPO/autogen/cabal.sh" > cabal-Linux-8.10.7.zip
-unzip cabal-Linux-8.10.7.zip
-mkdir -p "$PREFIX/cabal/bin"
-tar xf cabal-head.tar -C "$PREFIX/cabal/bin"
-
-"$REPO/autogen/binaryen.sh" > build-ubuntu-latest.zip
-mkdir "$PREFIX/binaryen"
-unzip build-ubuntu-latest.zip -d "$PREFIX/binaryen"
-chmod +x "$PREFIX"/binaryen/bin/*
-
-mkdir "$PREFIX/wabt"
-curl -L https://github.com/WebAssembly/wabt/releases/download/1.0.29/wabt-1.0.29-ubuntu.tar.gz | tar xz --strip-components=1 -C "$PREFIX/wabt"
-
 mkdir -p "$PREFIX/qemu-system-wasm32/bin"
 cc \
   -DWASMTIME="\"$PREFIX/wasmtime/bin/wasmtime\"" \
@@ -90,6 +77,14 @@ do
   echo "echo $e >> \$GITHUB_PATH" >> "$PREFIX/add_to_github_path.sh"
 done
 
+"$REPO/autogen/binaryen.sh" > build-ubuntu-latest.zip
+mkdir "$PREFIX/binaryen"
+unzip build-ubuntu-latest.zip -d "$PREFIX/binaryen"
+chmod +x "$PREFIX"/binaryen/bin/*
+
+mkdir "$PREFIX/wabt"
+curl -L https://github.com/WebAssembly/wabt/releases/download/1.0.29/wabt-1.0.29-ubuntu.tar.gz | tar xz --strip-components=1 -C "$PREFIX/wabt"
+
 if [ -n "${SKIP_GHC}" ]
 then
 	exit
@@ -113,6 +108,11 @@ pushd "$PREFIX/ghc-wasm32-wasi"
 make lib/settings
 ./bin/wasm32-wasi-ghc-pkg recache
 popd
+
+"$REPO/autogen/cabal.sh" > cabal-Linux-8.10.7.zip
+unzip cabal-Linux-8.10.7.zip
+mkdir -p "$PREFIX/cabal/bin"
+tar xf cabal-head.tar -C "$PREFIX/cabal/bin"
 
 mkdir -p "$PREFIX/wasm32-wasi-cabal/bin"
 echo "#!/bin/sh" >> "$PREFIX/wasm32-wasi-cabal/bin/wasm32-wasi-cabal"
