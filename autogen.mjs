@@ -6,7 +6,7 @@ import util from "util";
 
 async function getJSON(url) {
   const r = await fetch(url);
-  console.error(url);
+  if (!r.ok) throw new Error(r);
   return r.json();
 }
 
@@ -58,7 +58,7 @@ exec curl -L ${url}
 
 async function getGitHubRunId(owner, repo, branch, workflow_name) {
   const r = await getJSON(
-    `https://api.github.com/repos/${owner}/${repo}/actions/runs?branch=${branch}&status=success&per_page=100`
+    `https://api.github.com/repos/${owner}/${repo}/actions/runs?branch=${branch}&event=push&status=success&per_page=100`
   );
   return r.workflow_runs.find((e) => e.name && e.name === workflow_name).id;
 }
@@ -113,7 +113,7 @@ async function doGHC(bignum_backend) {
     job_id,
     `ghc-wasm32-wasi-${bignum_backend}.tar.xz`
   );
-  return Promise.all([
+  return await Promise.all([
     fs.promises.writeFile(
       `autogen/ghc-wasm32-wasi-${bignum_backend}.nix`,
       r.nix
@@ -135,7 +135,7 @@ async function doGitHub(owner, repo, branch, workflow_name, artifact_name) {
     artifact_name
   );
   const r = await getGitHubArtifact(owner, repo, artifact_id);
-  return Promise.all([
+  return await Promise.all([
     fs.promises.writeFile(`autogen/${repo}.nix`, r.nix),
     fs.promises.writeFile(`autogen/${repo}.sh`, r.sh, { mode: 0o755 }),
   ]);
