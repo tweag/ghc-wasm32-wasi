@@ -14,10 +14,22 @@ trap 'rm -rf "$workdir"' EXIT
 
 pushd "$workdir"
 
+mkdir -p "$PREFIX/fake-wasm-opt/bin"
+echo "#!/bin/sh" >> "$PREFIX/fake-wasm-opt/bin/wasm-opt"
+chmod +x "$PREFIX/fake-wasm-opt/bin/wasm-opt"
+
 "$REPO/autogen/wasi-sdk.sh" > dist-ubuntu-latest.zip
 unzip dist-ubuntu-latest.zip
 mkdir -p "$PREFIX/wasi-sdk"
 tar xzf wasi-sdk-*.tar.gz --strip-components=1 -C "$PREFIX/wasi-sdk"
+
+for p in clang clang++
+do
+  rm "$PREFIX/wasi-sdk/bin/$p"
+  echo "#!/usr/bin/env bash" >> "$PREFIX/wasi-sdk/bin/$p"
+  echo "PATH=$PREFIX/fake-wasm-opt/bin:\$PATH exec -a $PREFIX/wasi-sdk/bin/$p" "$PREFIX/wasi-sdk/bin/clang-14" '${1+"$@"}' >> "$PREFIX/wasi-sdk/bin/$p"
+  chmod +x "$PREFIX/wasi-sdk/bin/$p"
+done
 
 "$REPO/autogen/libffi-wasm32.sh" > out.zip
 unzip out.zip
