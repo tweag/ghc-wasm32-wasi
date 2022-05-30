@@ -58,6 +58,7 @@ chmod +x "$PREFIX/wasmtime-run/bin/wasmtime-run"
 
 echo "#!/bin/sh" >> "$PREFIX/add_to_github_path.sh"
 chmod +x "$PREFIX/add_to_github_path.sh"
+
 for p in \
   "$PREFIX/wabt/bin" \
   "$PREFIX/binaryen/bin" \
@@ -71,20 +72,23 @@ do
   echo "echo $p >> \$GITHUB_PATH" >> "$PREFIX/add_to_github_path.sh"
 done
 
-{
-echo "export AR=$PREFIX/wasi-sdk/bin/llvm-ar"
-echo "export CC=$PREFIX/wasi-sdk/bin/clang"
-echo "export CC_FOR_BUILD=cc"
-echo "export CXX=$PREFIX/wasi-sdk/bin/clang++"
-echo "export LD=$PREFIX/wasi-sdk/bin/wasm-ld"
-echo "export NM=$PREFIX/wasi-sdk/bin/llvm-nm"
-echo "export OBJCOPY=$PREFIX/wasi-sdk/bin/llvm-objcopy"
-echo "export OBJDUMP=$PREFIX/wasi-sdk/bin/llvm-objdump"
-echo "export RANLIB=$PREFIX/wasi-sdk/bin/llvm-ranlib"
-echo "export SIZE=$PREFIX/wasi-sdk/bin/llvm-size"
-echo "export STRINGS=$PREFIX/wasi-sdk/bin/llvm-strings"
-echo "export STRIP=$PREFIX/wasi-sdk/bin/llvm-strip"
-} >> "$PREFIX/env"
+for e in \
+  "AR=$PREFIX/wasi-sdk/bin/llvm-ar" \
+  "CC=$PREFIX/wasi-sdk/bin/clang" \
+  "CC_FOR_BUILD=cc" \
+  "CXX=$PREFIX/wasi-sdk/bin/clang++" \
+  "LD=$PREFIX/wasi-sdk/bin/wasm-ld" \
+  "NM=$PREFIX/wasi-sdk/bin/llvm-nm" \
+  "OBJCOPY=$PREFIX/wasi-sdk/bin/llvm-objcopy" \
+  "OBJDUMP=$PREFIX/wasi-sdk/bin/llvm-objdump" \
+  "RANLIB=$PREFIX/wasi-sdk/bin/llvm-ranlib" \
+  "SIZE=$PREFIX/wasi-sdk/bin/llvm-size" \
+  "STRINGS=$PREFIX/wasi-sdk/bin/llvm-strings" \
+  "STRIP=$PREFIX/wasi-sdk/bin/llvm-strip"
+do
+  echo "export $e" >> "$PREFIX/env"
+  echo "echo $e >> \$GITHUB_PATH" >> "$PREFIX/add_to_github_path.sh"
+done
 
 if [ -n "${SKIP_GHC}" ]
 then
