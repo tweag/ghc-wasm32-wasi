@@ -2,8 +2,8 @@
 { fetchzip }:
 fetchzip {
   url =
-    "https://nightly.link/WebAssembly/binaryen/actions/artifacts/254093127.zip";
+    "https://nightly.link/WebAssembly/binaryen/actions/artifacts/256739312.zip";
   hash =
-    "sha512-LLQIsMZar6THJG5dSM2fvM40++naHGHn+tDEHGWxaa3KsLqOL0vzYVKrNzpNBhKSKqFxTyVz5tfjK4Cj0KV6wg==";
+    "sha512-0fAcpm+DIdTQzH58hXEFf9+JvWsUgpPTiFESspj2SFkAaz2WhgLZlKPUpyOb/KCvItXreWRqjEMmhJxLxD85CA==";
   stripRoot = false;
 }
