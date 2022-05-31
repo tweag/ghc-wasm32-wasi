@@ -32,7 +32,7 @@ stdenvNoCC.mkDerivation {
     do
       rm $out/bin/$p
       makeWrapper \
-        $out/bin/clang-14 \
+        $out/bin/clang-15 \
         $out/bin/$p \
         --argv0 $out/bin/$p \
         --prefix PATH : ${fake-wasm-opt}/bin
