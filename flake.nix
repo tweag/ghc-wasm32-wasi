@@ -2,27 +2,23 @@
   description = "A very basic flake";
 
   inputs = {
-    flake-utils = {
+    haskell-nix = {
       type = "github";
-      owner = "numtide";
-      repo = "flake-utils";
-    };
-
-    nixpkgs = {
-      type = "github";
-      owner = "NixOS";
-      repo = "nixpkgs";
-      ref = "nixpkgs-unstable";
+      owner = "input-output-hk";
+      repo = "haskell.nix";
     };
   };
 
-  outputs = { self, flake-utils, nixpkgs, }:
-    flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
+  outputs = { self, haskell-nix, }:
+    haskell-nix.inputs.flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
       let
-        pkgs = import nixpkgs {
+        pkgs = import haskell-nix.inputs.nixpkgs-unstable {
           inherit system;
-          config = { contentAddressedByDefault = false; };
+          config = haskell-nix.config;
+          overlays = [ haskell-nix.overlay ];
         };
+        alex = pkgs.haskell-nix.bootstrap.packages.alex;
+        happy = pkgs.haskell-nix.bootstrap.packages.happy;
         binaryen = pkgs.callPackage pkgs/binaryen.nix { };
         cabal = pkgs.callPackage pkgs/cabal.nix { };
         wasi-sdk = pkgs.callPackage pkgs/wasi-sdk.nix { };
@@ -55,6 +51,8 @@
         combined-gmp = pkgs.symlinkJoin {
           name = "ghc-wasm32-wasi-combined-gmp";
           paths = [
+            alex
+            happy
             ghc-wasm32-wasi-gmp
             wasm32-wasi-cabal-gmp
             wasi-sdk
@@ -67,6 +65,8 @@
         combined-native = pkgs.symlinkJoin {
           name = "ghc-wasm32-wasi-combined-native";
           paths = [
+            alex
+            happy
             ghc-wasm32-wasi-native
             wasm32-wasi-cabal-native
             wasi-sdk
