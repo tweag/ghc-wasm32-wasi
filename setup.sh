@@ -138,6 +138,8 @@ echo \
   '${1+"$@"}' >> "$PREFIX/wasm32-wasi-cabal/bin/wasm32-wasi-cabal"
 chmod +x "$PREFIX/wasm32-wasi-cabal/bin/wasm32-wasi-cabal"
 
+mkdir "$PREFIX/.cabal"
+cp "$REPO/cabal.config" "$PREFIX/.cabal/config"
 "$PREFIX/wasm32-wasi-cabal/bin/wasm32-wasi-cabal" update
 
 popd

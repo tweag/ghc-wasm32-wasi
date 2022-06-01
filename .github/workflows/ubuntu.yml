@@ -14,6 +14,16 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
 
-      - name: ubuntu
+      - name: setup-ghc-wasm32-wasi
         run: |
           ./setup.sh
+          ~/.ghc-wasm32-wasi/add_to_github_path.sh
+
+      - name: test
+        run: |
+          wasm32-wasi-cabal \
+            v1-install \
+            --global \
+            --prefix=$HOME/.ghc-wasm32-wasi/ghc-wasm32-wasi \
+            --allow-newer="all:base,all:bytestring,all:ghc-bignum" \
+            servant-0.19
