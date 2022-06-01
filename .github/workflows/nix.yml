@@ -23,4 +23,4 @@ jobs:
 
       - name: nix
         run: |
-          nix run . -- --info
+          nix shell -c sh -c 'wasm32-wasi-cabal update && wasm32-wasi-cabal install --allow-newer="all:base,all:bytestring,all:ghc-bignum" servant-0.19'
