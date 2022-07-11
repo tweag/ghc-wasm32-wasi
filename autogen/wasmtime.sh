@@ -1,4 +1,4 @@
 
 #!/bin/sh
 
-exec curl -L https://nightly.link/bytecodealliance/wasmtime/actions/artifacts/259236977.zip
+exec curl -f -L --retry 5 https://nightly.link/bytecodealliance/wasmtime/actions/artifacts/293393011.zip

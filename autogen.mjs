@@ -28,10 +28,7 @@ async function getGitLabJobId(pipeline_id, job_name) {
 
 async function getGitLabArtifact(job_id, artifact_path) {
   const url = `https://gitlab.haskell.org/api/v4/projects/1/jobs/${job_id}/artifacts/${artifact_path}`;
-  let r = await util.promisify(child_process.execFile)("nix", [
-    "run",
-    ".#pkgs.nix-prefetch",
-    "--",
+  let r = await util.promisify(child_process.execFile)("nix-prefetch", [
     "fetchzip",
     "--url",
     url,
@@ -51,7 +48,7 @@ fetchzip {
   const sh = `
 #!/bin/sh
 
-exec curl -L ${url}
+exec curl -f -L --retry 5 ${url}
 `;
   return { nix, sh };
 }
@@ -64,19 +61,20 @@ async function getGitHubRunId(owner, repo, branch, workflow_name) {
 }
 
 async function getGitHubArtifactId(owner, repo, run_id, artifact_name) {
-  let r = await getJSON(
-    `https://api.github.com/repos/${owner}/${repo}/actions/runs/${run_id}/artifacts`
-  );
-  r = r.artifacts.find((e) => e.name === artifact_name);
-  return r.id;
+  try {
+    let r = await getJSON(
+      `https://api.github.com/repos/${owner}/${repo}/actions/runs/${run_id}/artifacts`
+    );
+    r = r.artifacts.find((e) => e.name === artifact_name);
+    return r.id;
+  } catch (err) {
+    throw new Error(`getGitHubArtifactId ${owner}/${repo} failed with ${err}`);
+  }
 }
 
 async function getGitHubArtifact(owner, repo, artifact_id) {
   const url = `https://nightly.link/${owner}/${repo}/actions/artifacts/${artifact_id}.zip`;
-  const r = await util.promisify(child_process.execFile)("nix", [
-    "run",
-    ".#pkgs.nix-prefetch",
-    "--",
+  const r = await util.promisify(child_process.execFile)("nix-prefetch", [
     "fetchzip",
     "--url",
     url,
@@ -98,7 +96,7 @@ fetchzip {
   const sh = `
 #!/bin/sh
 
-exec curl -L ${url}
+exec curl -f -L --retry 5 ${url}
 `;
   return { nix, sh };
 }
@@ -146,5 +144,5 @@ doGHC("native");
 doGitHub("WebAssembly", "wasi-sdk", "main", "CI", "dist-ubuntu-latest");
 doGitHub("tweag", "libffi-wasm32", "master", "shell", "out");
 doGitHub("bytecodealliance", "wasmtime", "main", "CI", "bins-x86_64-linux");
-doGitHub("haskell", "cabal", "master", "Validate", "cabal-Linux-8.10.7");
+doGitHub("haskell", "cabal", "master", "Validate", "cabal-Linux-9.2.3");
 doGitHub("WebAssembly", "binaryen", "main", "CI", "build-ubuntu-latest");

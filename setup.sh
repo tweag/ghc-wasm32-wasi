@@ -121,8 +121,8 @@ make lib/settings
 ./bin/wasm32-wasi-ghc-pkg recache
 popd
 
-"$REPO/autogen/cabal.sh" > cabal-Linux-8.10.7.zip
-unzip cabal-Linux-8.10.7.zip
+"$REPO/autogen/cabal.sh" > cabal-Linux-9.2.3.zip
+unzip cabal-Linux-9.2.3.zip
 mkdir -p "$PREFIX/cabal/bin"
 tar xf cabal-head.tar -C "$PREFIX/cabal/bin"
 

@@ -10,7 +10,7 @@
   };
 
   outputs = { self, haskell-nix, }:
-    haskell-nix.inputs.flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
+    haskell-nix.inputs.flake-utils.lib.eachSystem [ "x86_64-linux" "aarch64-darwin" ] (system:
       let
         pkgs = import haskell-nix.inputs.nixpkgs-unstable {
           inherit system;
@@ -26,6 +26,7 @@
         wasmtime-run = pkgs.callPackage pkgs/wasmtime-run.nix {
           inherit qemu-system-wasm32;
         };
+        wasm3 = pkgs.callPackage pkgs/wasm3.nix { };
         ghc-wasm32-wasi = ghc-wasm32-wasi-gmp;
         ghc-wasm32-wasi-gmp = pkgs.callPackage pkgs/ghc-wasm32-wasi.nix {
           inherit wasi-sdk;
@@ -60,6 +61,7 @@
             wabt
             wasmtime
             wasmtime-run
+            wasm3
           ];
         };
         combined-native = pkgs.symlinkJoin {
@@ -74,6 +76,7 @@
             wabt
             wasmtime
             wasmtime-run
+            wasm3
           ];
         };
       in

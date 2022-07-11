@@ -1,4 +1,4 @@
 
 #!/bin/sh
 
-exec curl -L https://nightly.link/haskell/cabal/actions/artifacts/259749289.zip
+exec curl -f -L --retry 5 https://nightly.link/haskell/cabal/actions/artifacts/293869032.zip

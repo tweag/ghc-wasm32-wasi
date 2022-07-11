@@ -1,4 +1,4 @@
 
 #!/bin/sh
 
-exec curl -L https://nightly.link/WebAssembly/wasi-sdk/actions/artifacts/259314898.zip
+exec curl -f -L --retry 5 https://nightly.link/WebAssembly/wasi-sdk/actions/artifacts/264883384.zip

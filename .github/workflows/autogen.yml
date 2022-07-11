@@ -25,7 +25,7 @@ jobs:
 
       - name: autogen
         run: |
-          nix build --no-link .#pkgs.nix-prefetch
-          NIX_PATH=nixpkgs=$(nix flake archive --json | jq -r .inputs.nixpkgs.path) ./autogen.mjs || true
+          nix profile install .#pkgs.nix-prefetch
+          NIX_PATH=nixpkgs=$(nix flake archive --json | jq -r '.inputs["haskell-nix"].inputs["nixpkgs-unstable"].path') ./autogen.mjs || true
 
           git diff

@@ -1,0 +1,23 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 2a4a8aa..d4c041d 100755
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -194,8 +194,7 @@ elseif(BUILD_WASI MATCHES "uvwasi")
+   include(FetchContent)
+   FetchContent_Declare(
+     uvwasi
+-    GIT_REPOSITORY https://github.com/nodejs/uvwasi.git
+-    GIT_TAG b599542f7ce001e04cdff9db82b05fee96bb3332
++    SOURCE_DIR @uvwasi_src@
+   )
+ 
+   FetchContent_GetProperties(uvwasi)
+@@ -205,7 +204,7 @@ elseif(BUILD_WASI MATCHES "uvwasi")
+     add_subdirectory(${uvwasi_SOURCE_DIR} ${uvwasi_BINARY_DIR} EXCLUDE_FROM_ALL)
+   endif()
+   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Dd_m3HasUVWASI")
+-  target_link_libraries(${OUT_FILE} uvwasi_a uv_a)
++  target_link_libraries(${OUT_FILE} uvwasi_a uv)
+ endif()
+ 
+ check_ipo_supported(RESULT result)
