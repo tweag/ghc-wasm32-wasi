@@ -2,7 +2,7 @@
 { fetchzip }:
 fetchzip {
   url =
-    "https://gitlab.haskell.org/api/v4/projects/1/jobs/1074385/artifacts/ghc-wasm32-wasi-gmp.tar.xz";
+    "https://gitlab.haskell.org/api/v4/projects/1/jobs/1108198/artifacts/ghc-wasm32-wasi-gmp.tar.xz";
   hash =
-    "sha512-7rliUqYjUt8CRg+lRddlCkLZeFWv8CTj9COq/yocpc5Z4LkZRukqbXR8iVye1jK7+07d3bUN1a0G+ChATLUQzg==";
+    "sha512-G2ZDvV/V9G1y+qgvlFN/pAkdstlxmk6Z7ZODjvIr53pxRF9/8gCoJaHatOLDM21JMQzRcQN4kG5zAE5exDgtRw==";
 }
