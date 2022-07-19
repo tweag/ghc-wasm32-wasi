@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
     rev = "f92bdd8d29ac43116ad6d18a41881b25c16600ff";
     hash =
       "sha512-2AnGUm8XgI1zbJGmyOExrWCX04K6lBLsbK+FLDWimSK9S+YyYwbxLCYHu1dvqHcVUjLpg3eK8iE3dAwB15dFmA==";
-    extraPostFetch = ''
+    postFetch = ''
       pushd $out
       patch -p1 < ${./uvwasi.diff}
       popd

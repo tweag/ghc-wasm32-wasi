@@ -2,8 +2,8 @@
 { fetchzip }:
 fetchzip {
   url =
-    "https://nightly.link/haskell/cabal/actions/artifacts/293869032.zip";
+    "https://nightly.link/haskell/cabal/actions/artifacts/302656005.zip";
   hash =
-    "sha512-Jok3LIoqRP6h+hS1nV0KAkoDuguI1QDTQkMQ7uCcP9O/pwNK72tdZwDLRqkbJuF5I75Jf7jwPG5LQP1zdc2ZZQ==";
+    "sha512-pir+1o/8Ps9dN5UwwbzUrhwZvowGap+SkcOSzZjM5ZrwGP+4tStpQRlIBqK85T3qSFR3pSYvrhBXcqm8G6o2vw==";
   stripRoot = false;
 }
