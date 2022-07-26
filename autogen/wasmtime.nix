@@ -2,8 +2,8 @@
 { fetchzip }:
 fetchzip {
   url =
-    "https://nightly.link/bytecodealliance/wasmtime/actions/artifacts/302288762.zip";
+    "https://nightly.link/bytecodealliance/wasmtime/actions/artifacts/310321965.zip";
   hash =
-    "sha512-bSqpVMyJ5SHKkeomRbI/mUyWaH6Hov/ZtY+LnBYGj794wzWeyXuZrxK+lE8U7RnZCqqrmGc4Wx2kZfrn4X7T6A==";
+    "sha512-q2cMCVQhxQauLA5wvRxaoqaSEhItklVpqcZTWtsVH1jzHX/HOqxb6XhiTkDP5ActJcne8RqF+eu389pgr/mXHQ==";
   stripRoot = false;
 }
