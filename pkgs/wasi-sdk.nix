@@ -6,6 +6,7 @@
 , stdenv
 , stdenvNoCC
 , writeShellScriptBin
+, zstd
 ,
 }:
 let
@@ -16,7 +17,7 @@ in
 stdenvNoCC.mkDerivation {
   name = "wasi-sdk";
 
-  buildInputs = [ libxml2 ncurses stdenv.cc.cc.lib ];
+  buildInputs = [ libxml2 ncurses stdenv.cc.cc.lib zstd ];
   nativeBuildInputs = [ autoPatchelfHook makeWrapper ];
 
   dontUnpack = true;
@@ -32,7 +33,7 @@ stdenvNoCC.mkDerivation {
     do
       rm $out/bin/$p
       makeWrapper \
-        $out/bin/clang-14 \
+        $out/bin/clang-15 \
         $out/bin/$p \
         --argv0 $out/bin/$p \
         --prefix PATH : ${fake-wasm-opt}/bin

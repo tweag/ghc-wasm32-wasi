@@ -2,8 +2,8 @@
 { fetchzip }:
 fetchzip {
   url =
-    "https://nightly.link/WebAssembly/wasi-sdk/actions/artifacts/307689480.zip";
+    "https://nightly.link/tweag/wasi-sdk/actions/artifacts/323853644.zip";
   hash =
-    "sha512-qwv6MjBErZz3HTx98S0ZemnRqc0IRkDZiLSx7U1j7PMWtix5aKX1sccE9pZ7KasiifPzVZJqdxotb2cfoov1wA==";
+    "sha512-3xUUmCvSTfUUCUufB7xtVglEqYr0KC2T6nfUDaXVWutGGe5TUGU2th1b9erS3VhRiynuUQNJIHGiSC5M6kJm5g==";
   stripRoot = false;
 }

@@ -27,7 +27,7 @@ for p in clang clang++
 do
   rm "$PREFIX/wasi-sdk/bin/$p"
   echo "#!/usr/bin/env bash" >> "$PREFIX/wasi-sdk/bin/$p"
-  echo "PATH=$PREFIX/fake-wasm-opt/bin:\$PATH exec -a $PREFIX/wasi-sdk/bin/$p" "$PREFIX/wasi-sdk/bin/clang-14" '${1+"$@"}' >> "$PREFIX/wasi-sdk/bin/$p"
+  echo "PATH=$PREFIX/fake-wasm-opt/bin:\$PATH exec -a $PREFIX/wasi-sdk/bin/$p" "$PREFIX/wasi-sdk/bin/clang-15" '${1+"$@"}' >> "$PREFIX/wasi-sdk/bin/$p"
   chmod +x "$PREFIX/wasi-sdk/bin/$p"
 done
 
