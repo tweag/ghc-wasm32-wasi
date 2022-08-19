@@ -41,6 +41,10 @@ unzip bins-x86_64-linux.zip
 mkdir -p "$PREFIX/wasmtime/bin"
 tar xJf wasmtime-*-x86_64-linux.tar.xz --strip-components=1 -C "$PREFIX/wasmtime/bin" --wildcards '*/wasmtime'
 
+mkdir -p "$PREFIX/proot/bin"
+curl -f -L --retry 5 https://proot.gitlab.io/proot/bin/proot -o "$PREFIX"/proot/bin/proot
+chmod +x "$PREFIX"/proot/bin/proot
+
 mkdir -p "$PREFIX/qemu-system-wasm32/bin"
 cc \
   -DWASMTIME="\"$PREFIX/wasmtime/bin/wasmtime\"" \
@@ -52,7 +56,7 @@ cc \
 
 mkdir -p "$PREFIX/wasmtime-run/bin"
 echo "#!/bin/sh" >> "$PREFIX/wasmtime-run/bin/wasmtime-run"
-echo "exec proot -q $PREFIX/qemu-system-wasm32/bin/qemu-system-wasm32" '${1+"$@"}' >> "$PREFIX/wasmtime-run/bin/wasmtime-run"
+echo "exec $PREFIX/proot/bin/proot -q $PREFIX/qemu-system-wasm32/bin/qemu-system-wasm32" '${1+"$@"}' >> "$PREFIX/wasmtime-run/bin/wasmtime-run"
 chmod +x "$PREFIX/wasmtime-run/bin/wasmtime-run"
 
 echo "#!/bin/sh" >> "$PREFIX/add_to_github_path.sh"
@@ -63,6 +67,7 @@ for p in \
   "$PREFIX/binaryen/bin" \
   "$PREFIX/wasmtime/bin" \
   "$PREFIX/wasmtime-run/bin" \
+  "$PREFIX/proot/bin" \
   "$PREFIX/wasi-sdk/bin" \
   "$PREFIX/ghc-wasm32-wasi/bin" \
   "$PREFIX/wasm32-wasi-cabal/bin"
@@ -112,8 +117,8 @@ pushd "$PREFIX/ghc-wasm32-wasi"
   LD="$PREFIX/wasi-sdk/bin/wasm-ld" \
   RANLIB="$PREFIX/wasi-sdk/bin/llvm-ranlib" \
   STRIP="$PREFIX/wasi-sdk/bin/llvm-strip" \
-  CONF_CC_OPTS_STAGE2="-O3 -mmutable-globals -mnontrapping-fptoint -mreference-types -msign-ext" \
-  CONF_CXX_OPTS_STAGE2="-fno-exceptions -O3 -mmutable-globals -mnontrapping-fptoint -mreference-types -msign-ext" \
+  CONF_CC_OPTS_STAGE2="-Wno-int-conversion -O3 -mmutable-globals -mnontrapping-fptoint -mreference-types -msign-ext" \
+  CONF_CXX_OPTS_STAGE2="-Wno-int-conversion -fno-exceptions -O3 -mmutable-globals -mnontrapping-fptoint -mreference-types -msign-ext" \
   CONF_GCC_LINKER_OPTS_STAGE2="-Wl,--error-limit=0,--growable-table,--stack-first -Wno-unused-command-line-argument" \
   --host=x86_64-linux \
   --target=wasm32-wasi
