@@ -16,6 +16,5 @@ jobs:
 
       - name: setup-ghc-wasm32-wasi
         run: |
-          df -hT
-          PREFIX=${{ runner.temp }}/.ghc-wasm32-wasi ./setup.sh
-          ${{ runner.temp }}/.ghc-wasm32-wasi/add_to_github_path.sh
+          PREFIX=/tmp/.ghc-wasm32-wasi ./setup.sh
+          /tmp/.ghc-wasm32-wasi/add_to_github_path.sh
