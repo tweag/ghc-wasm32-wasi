@@ -165,7 +165,7 @@ const _wasmtime = fetchGitHubLatestRelease(
   "wasmtime",
   "x86_64-linux.tar.xz"
 );
-const _WasmEdge = fetchGitHubLatestRelease(
+const _wasmedge = fetchGitHubLatestRelease(
   "builtins.fetchTarball",
   "WasmEdge",
   "WasmEdge",
@@ -200,13 +200,13 @@ await Deno.writeTextFile(
   "autogen.json",
   JSON.stringify(
     {
-      wasi_sdk: await _wasi_sdk,
-      libffi_wasm32: await _libffi_wasm32,
+      "wasi-sdk": await _wasi_sdk,
+      "libffi-wasm32": await _libffi_wasm32,
       deno: await _deno,
       binaryen: await _binaryen,
       wabt: await _wabt,
       wasmtime: await _wasmtime,
-      WasmEdge: await _WasmEdge,
+      wasmedge: await _wasmedge,
       wasmer: await _wasmer,
       wizer: await _wizer,
       cabal: await _cabal,

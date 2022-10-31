@@ -1,9 +1,9 @@
 {
-  "wasi_sdk": {
+  "wasi-sdk": {
     "url": "https://nightly.link/tweag/wasi-sdk/actions/artifacts/416692608.zip",
     "sha256": "17p5faj6pgzasfhb10icab7q8z6k6b6zzlrxjqpa09fr38i843sw"
   },
-  "libffi_wasm32": {
+  "libffi-wasm32": {
     "url": "https://nightly.link/tweag/libffi-wasm32/actions/artifacts/418423351.zip",
     "sha256": "13xmf3p38gamnqm1xcsv70k67rawf5w13fgkcn2slyyfl6rd4v8b"
   },
@@ -23,7 +23,7 @@
     "url": "https://github.com/bytecodealliance/wasmtime/releases/download/v2.0.1/wasmtime-v2.0.1-x86_64-linux.tar.xz",
     "sha256": "1dqbgiblqhixaxwxz8x70cfbn8id5z1hx59amyaxmkjgz657lyi5"
   },
-  "WasmEdge": {
+  "wasmedge": {
     "url": "https://github.com/WasmEdge/WasmEdge/releases/download/0.11.1/WasmEdge-0.11.1-ubuntu20.04_x86_64.tar.gz",
     "sha256": "0745nljlvlx23b1aaf0abx9hryly8lgngq498412vc0g9w8q19fk"
   },
