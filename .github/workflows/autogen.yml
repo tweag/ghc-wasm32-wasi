@@ -1,0 +1,27 @@
+name: autogen
+
+on:
+  push:
+  pull_request:
+
+jobs:
+
+  autogen:
+    name: autogen
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: setup-deno
+        uses: denoland/setup-deno@v1
+
+      - name: setup-nix
+        uses: cachix/install-nix-action@v18
+
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: autogen
+        run: |
+          ./autogen.js
+
+          git diff

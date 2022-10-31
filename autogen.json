@@ -1,0 +1,46 @@
+{
+  "wasi_sdk": {
+    "url": "https://nightly.link/tweag/wasi-sdk/actions/artifacts/416692608.zip",
+    "sha256": "17p5faj6pgzasfhb10icab7q8z6k6b6zzlrxjqpa09fr38i843sw"
+  },
+  "libffi_wasm32": {
+    "url": "https://nightly.link/tweag/libffi-wasm32/actions/artifacts/418423351.zip",
+    "sha256": "13xmf3p38gamnqm1xcsv70k67rawf5w13fgkcn2slyyfl6rd4v8b"
+  },
+  "deno": {
+    "url": "https://github.com/denoland/deno/releases/download/v1.27.0/deno-x86_64-unknown-linux-gnu.zip",
+    "sha256": "1jn7mzilmh3g3q9y9bw2c5ks0riv62pq560z4p5qanzgrs4dyfrw"
+  },
+  "binaryen": {
+    "url": "https://github.com/WebAssembly/binaryen/releases/download/version_110/binaryen-version_110-x86_64-linux.tar.gz",
+    "sha256": "1ck6c2wvhba54y87hb2nbqckp8p7i1nzg3cvk0n2hl1xm568m12g"
+  },
+  "wabt": {
+    "url": "https://github.com/WebAssembly/wabt/releases/download/1.0.30/wabt-1.0.30-ubuntu.tar.gz",
+    "sha256": "0zvbabnrxgy6hr8ijy4z36si2glyk5f4bhw2win43nl1sbxh8kni"
+  },
+  "wasmtime": {
+    "url": "https://github.com/bytecodealliance/wasmtime/releases/download/v2.0.1/wasmtime-v2.0.1-x86_64-linux.tar.xz",
+    "sha256": "1dqbgiblqhixaxwxz8x70cfbn8id5z1hx59amyaxmkjgz657lyi5"
+  },
+  "WasmEdge": {
+    "url": "https://github.com/WasmEdge/WasmEdge/releases/download/0.11.1/WasmEdge-0.11.1-ubuntu20.04_x86_64.tar.gz",
+    "sha256": "0745nljlvlx23b1aaf0abx9hryly8lgngq498412vc0g9w8q19fk"
+  },
+  "wasmer": {
+    "url": "https://github.com/wasmerio/wasmer/releases/download/2.3.0/wasmer-linux-amd64.tar.gz",
+    "sha256": "1ivid43xrki55h0145digkf3xx9sb566hz1xzkigfllq3nwhxabr"
+  },
+  "wizer": {
+    "url": "https://nightly.link/bytecodealliance/wizer/actions/artifacts/401029104.zip",
+    "sha256": "1v9g3ccivvbldk5f9bmyrzfmwpbrnqsm6c554lcyy5ggjjgmhdd4"
+  },
+  "cabal": {
+    "url": "https://downloads.haskell.org/cabal/cabal-install-3.8.1.0/cabal-install-3.8.1.0-x86_64-linux-deb10.tar.xz",
+    "sha256": "0js242sml0ns813gzld2bl79a92wh5h8d5myhsxkblj2zm31l6n7"
+  },
+  "proot": {
+    "url": "https://gitlab.com/api/v4/projects/9799675/jobs/2370229665/artifacts/dist/proot",
+    "sha256": "1lkhvm46r1p83xggzvav3m61rqgbzszal1a99wb0l015lbssvwmp"
+  }
+}
