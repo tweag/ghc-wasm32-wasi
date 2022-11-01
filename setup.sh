@@ -75,6 +75,24 @@ do
   echo "echo $p >> \$GITHUB_PATH" >> "$PREFIX/add_to_github_path.sh"
 done
 
+for e in \
+  "AR=$PREFIX/wasi-sdk/bin/llvm-ar" \
+  "CC=$PREFIX/wasi-sdk/bin/clang" \
+  "CC_FOR_BUILD=cc" \
+  "CXX=$PREFIX/wasi-sdk/bin/clang++" \
+  "LD=$PREFIX/wasi-sdk/bin/wasm-ld" \
+  "NM=$PREFIX/wasi-sdk/bin/llvm-nm" \
+  "OBJCOPY=$PREFIX/wasi-sdk/bin/llvm-objcopy" \
+  "OBJDUMP=$PREFIX/wasi-sdk/bin/llvm-objdump" \
+  "RANLIB=$PREFIX/wasi-sdk/bin/llvm-ranlib" \
+  "SIZE=$PREFIX/wasi-sdk/bin/llvm-size" \
+  "STRINGS=$PREFIX/wasi-sdk/bin/llvm-strings" \
+  "STRIP=$PREFIX/wasi-sdk/bin/llvm-strip"
+do
+  echo "export $e" >> "$PREFIX/env"
+  echo "echo $e >> \$GITHUB_PATH" >> "$PREFIX/add_to_github_path.sh"
+done
+
 popd
 
 echo "Everything set up in $PREFIX."
