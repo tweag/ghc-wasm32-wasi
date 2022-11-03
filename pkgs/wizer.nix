@@ -9,7 +9,7 @@ stdenvNoCC.mkDerivation {
   nativeBuildInputs = [ autoPatchelfHook ];
   installPhase = ''
     mkdir -p $out/bin
-    install -Dm755 ${src} $out/bin/wizer
+    tar -xJf ${src} -C $out/bin --strip-components=1 --wildcards '*/wizer'
   '';
   doInstallCheck = true;
   installCheckPhase = ''
