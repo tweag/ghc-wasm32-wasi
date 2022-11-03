@@ -24,8 +24,8 @@
     "sha256": "1dqbgiblqhixaxwxz8x70cfbn8id5z1hx59amyaxmkjgz657lyi5"
   },
   "wasmedge": {
-    "url": "https://github.com/WasmEdge/WasmEdge/releases/download/0.11.1/WasmEdge-0.11.1-ubuntu20.04_x86_64.tar.gz",
-    "sha256": "0745nljlvlx23b1aaf0abx9hryly8lgngq498412vc0g9w8q19fk"
+    "url": "https://github.com/WasmEdge/WasmEdge/releases/download/0.11.2/WasmEdge-0.11.2-ubuntu20.04_x86_64.tar.gz",
+    "sha256": "12529cz889vp2lrvwzga94qa0b6ff4fhi4j25ivym7m22g7yad6q"
   },
   "wasmer": {
     "url": "https://github.com/wasmerio/wasmer/releases/download/2.3.0/wasmer-linux-amd64.tar.gz",
