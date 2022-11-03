@@ -32,8 +32,8 @@
     "sha256": "1ivid43xrki55h0145digkf3xx9sb566hz1xzkigfllq3nwhxabr"
   },
   "wizer": {
-    "url": "https://nightly.link/bytecodealliance/wizer/actions/artifacts/401029104.zip",
-    "sha256": "1v9g3ccivvbldk5f9bmyrzfmwpbrnqsm6c554lcyy5ggjjgmhdd4"
+    "url": "https://nightly.link/bytecodealliance/wizer/actions/artifacts/422730592.zip",
+    "sha256": "0180ffaikswf8p4kd24c9ykb22n0yiskk1cc3q27fvbvprcw0f67"
   },
   "cabal": {
     "url": "https://downloads.haskell.org/cabal/cabal-install-3.8.1.0/cabal-install-3.8.1.0-x86_64-linux-deb10.tar.xz",

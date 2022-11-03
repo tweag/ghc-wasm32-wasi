@@ -181,7 +181,7 @@ const _wizer = fetchGitHubArtifact(
   "bytecodealliance",
   "wizer",
   "main",
-  "CI",
+  "Release",
   "bins-x86_64-linux"
 );
 const _cabal = fetchurl(
