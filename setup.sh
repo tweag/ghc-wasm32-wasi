@@ -47,7 +47,7 @@ curl -f -L --retry 5 "$(jq -r .wasmer.url "$REPO"/autogen.json)" | tar xz -C "$P
 curl -f -L --retry 5 "$(jq -r .wizer.url "$REPO"/autogen.json)" -o wizer.zip
 unzip wizer.zip
 mkdir -p "$PREFIX/wizer/bin"
-install -Dm755 wizer "$PREFIX/wizer/bin"
+tar xJf wizer-*.tar.xz -C "$PREFIX/wizer/bin" --strip-components=1 --wildcards '*/wizer'
 
 mkdir -p "$PREFIX/cabal/bin"
 curl -f -L --retry 5 "$(jq -r .cabal.url "$REPO"/autogen.json)" | tar xJ -C "$PREFIX/cabal/bin" 'cabal'
