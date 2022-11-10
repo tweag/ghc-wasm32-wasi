@@ -1,0 +1,24 @@
+variables:
+  DOCKER_REV: 205afce5c7ebdb8666b96638f6758fe527f40a7f
+  GIT_DEPTH: "1"
+
+x86_64-linux:
+  tags:
+    - x86_64-linux
+  image: registry.gitlab.haskell.org/ghc/ci-images/x86_64-linux-ubuntu20_04:$DOCKER_REV
+  before_script:
+    - sudo chown ghc:ghc -R .
+  script:
+    - |
+      PREFIX=/tmp/.ghc-wasm ./setup.sh
+      . /tmp/.ghc-wasm/env
+
+x86_64-linux-nix:
+  tags:
+    - x86_64-linux
+  image: nixos/nix:2.11.1
+  before_script:
+    - echo "experimental-features = nix-command flakes" >> /etc/nix/nix.conf
+  script:
+    - |
+      nix build --json --no-link .#all
