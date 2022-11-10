@@ -23,7 +23,9 @@ async function fetchGitLabArtifactURL(
       `https://${gitlab_domain}/api/v4/projects/${project_id}/pipelines/${pipeline_id}/jobs`
     )
   ).find((e) => e.name === job_name).id;
-  return `https://${gitlab_domain}/api/v4/projects/${project_id}/jobs/${job_id}/artifacts/${artifact_path}`;
+  return artifact_path
+    ? `https://${gitlab_domain}/api/v4/projects/${project_id}/jobs/${job_id}/artifacts/${artifact_path}`
+    : `https://${gitlab_domain}/api/v4/projects/${project_id}/jobs/${job_id}/artifacts`;
 }
 
 async function fetchGitHubArtifactURL(
@@ -134,12 +136,13 @@ const _wasi_sdk = fetchGitHubArtifact(
   "CI",
   "dist-ubuntu-latest"
 );
-const _libffi_wasm32 = fetchGitHubArtifact(
-  "tweag",
-  "libffi-wasm32",
+const _libffi_wasm = fetchGitLabArtifact(
+  "builtins.fetchTarball",
+  "gitlab.haskell.org",
+  3214,
   "master",
-  "shell",
-  "out"
+  "x86_64-linux",
+  null
 );
 const _deno = fetchGitHubLatestRelease(
   "builtins.fetchTarball",
@@ -201,7 +204,7 @@ await Deno.writeTextFile(
   JSON.stringify(
     {
       "wasi-sdk": await _wasi_sdk,
-      "libffi-wasm32": await _libffi_wasm32,
+      "libffi-wasm": await _libffi_wasm,
       deno: await _deno,
       binaryen: await _binaryen,
       wabt: await _wabt,

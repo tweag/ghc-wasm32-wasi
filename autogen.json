@@ -3,9 +3,9 @@
     "url": "https://nightly.link/tweag/wasi-sdk/actions/artifacts/420895369.zip",
     "sha256": "0g4833ixc9jj24vzj6ixj37zlamjscj5mr04l7nkxppzkiamlvdm"
   },
-  "libffi-wasm32": {
-    "url": "https://nightly.link/tweag/libffi-wasm32/actions/artifacts/418423351.zip",
-    "sha256": "13xmf3p38gamnqm1xcsv70k67rawf5w13fgkcn2slyyfl6rd4v8b"
+  "libffi-wasm": {
+    "url": "https://gitlab.haskell.org/api/v4/projects/3214/jobs/1227903/artifacts",
+    "sha256": "1rj03kdjn1ppkymcbixwa96gcgyw7gg49vmib861q6wvsm721ia0"
   },
   "deno": {
     "url": "https://github.com/denoland/deno/releases/download/v1.27.2/deno-x86_64-unknown-linux-gnu.zip",
