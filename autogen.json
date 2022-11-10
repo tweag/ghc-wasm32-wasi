@@ -8,8 +8,8 @@
     "sha256": "13xmf3p38gamnqm1xcsv70k67rawf5w13fgkcn2slyyfl6rd4v8b"
   },
   "deno": {
-    "url": "https://github.com/denoland/deno/releases/download/v1.27.1/deno-x86_64-unknown-linux-gnu.zip",
-    "sha256": "0b71q14pzdz6hzznc8sqs4x46jhis0j09k35js6n22wrvnm813rp"
+    "url": "https://github.com/denoland/deno/releases/download/v1.27.2/deno-x86_64-unknown-linux-gnu.zip",
+    "sha256": "07ck4jjgmxd79ifcxbb60789fp4kbk5vvipvl4awkxs15wnp1h9f"
   },
   "binaryen": {
     "url": "https://github.com/WebAssembly/binaryen/releases/download/version_110/binaryen-version_110-x86_64-linux.tar.gz",
@@ -32,8 +32,8 @@
     "sha256": "1ivid43xrki55h0145digkf3xx9sb566hz1xzkigfllq3nwhxabr"
   },
   "wizer": {
-    "url": "https://nightly.link/bytecodealliance/wizer/actions/artifacts/424380969.zip",
-    "sha256": "1qysp9glyw6qn0wqyli0jq8q85xhaxg0z9861c34zs5sxyva9mya"
+    "url": "https://nightly.link/bytecodealliance/wizer/actions/artifacts/431598906.zip",
+    "sha256": "0jjmw333nkrcfd0v0kajkfbjyrx4v4j4ypk3g6kz8g16gbysxmpz"
   },
   "cabal": {
     "url": "https://downloads.haskell.org/cabal/cabal-install-3.8.1.0/cabal-install-3.8.1.0-x86_64-linux-deb10.tar.xz",
